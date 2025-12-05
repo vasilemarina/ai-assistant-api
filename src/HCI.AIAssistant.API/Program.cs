@@ -16,6 +16,7 @@ builder.Services.AddCors(options =>
         .AllowAnyOrigin();
     });
 });
+
 // Replace appsettings.json values with Key Vault values
 var keyVaultName = builder.Configuration
     [$"AppConfigurations{ConfigurationPath.KeyDelimiter}KeyVaultName"];
@@ -51,8 +52,7 @@ builder.Services.AddSingleton<IAppConfigurationsService>(
 );
 
 builder.Services.AddSingleton<IParametricFunctions, ParametricFunctions>();
-
-// Add services to the container.
+builder.Services.AddSingleton<IAIAssistantService, AIAssistantService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -60,6 +60,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseCors("CORS");
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
